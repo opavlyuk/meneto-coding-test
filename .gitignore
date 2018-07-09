@@ -1,0 +1,10 @@
+*.pyc
+*.swo
+*.swp
+*.core
+*.db
+
+*\.del*
+.idea/*
+venv/*
+src/tests/.pytest_cache/*
