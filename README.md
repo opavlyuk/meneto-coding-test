@@ -44,17 +44,10 @@ RUN
 
 **Please consider running tests rather then run.py script**
 
-1. Ensure that run.py is executable:
+Execute run script:
 
 ```
-(venv) $ chmod +x run.py
-
-```
-
-2. Execute run script:
-
-```
-(venv) $ /.run.py
+(venv) $ python run.py
 
 ```
 
