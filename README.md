@@ -2,6 +2,8 @@ TEST PROJECT FOR MENETO
 ====================
 
 Tested under GNU/Linux system.
+API needs extending, but it would take a bit more time.
+Hope, project consists enough code to make decision about my skills.
 
 REQUIREMENTS
 ------------
