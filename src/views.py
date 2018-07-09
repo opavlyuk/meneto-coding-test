@@ -46,19 +46,19 @@ class BasketAPI(MethodView):
     def create_items(basket, items):
         """Create new basket items.
 
-        Raises:
-            KeyError: If new items contains non-existent products.
+        Args:
+            items (dict): item id and quantity.
         """
         basket_items = []
         if items is None:
             return
-        for p_id in items:
-            product = Product.get(id=p_id['id'])
+        for p in items:
+            product = Product.get(id=p['id'])
             if product is None:
-                raise KeyError('Product with id {} not found'.format(p_id['id']))
+                raise KeyError('Product with id {} not found'.format(p['id']))
             new_item = BasketItem(
                 product=product,
-                quantity=p_id['quantity'],
+                quantity=p['quantity'],
                 created=datetime.datetime.now(),
             )
             basket_items.append(new_item)
@@ -74,15 +74,18 @@ class BasketAPI(MethodView):
             pointing to new basket url.
         """
         req = request.get_json()
-        new_basket = Basket(created=datetime.datetime.now(),
-                            customer=Customer.get(id=req['customer_id']),
-                            items=[])
+        try:
+            new_basket = Basket(created=datetime.datetime.now(),
+                                customer=Customer.get(id=req['customer_id']),
+                                items=[])
+        except ValueError:
+            return '', HTTPStatus.BAD_REQUEST
         try:
             self.create_items(new_basket, req.get('items', []))
         except KeyError:
             # Clean-up new basket if exception occurred during item adding
             new_basket.delete()
-            raise
+            return '', HTTPStatus.BAD_REQUEST
         resp = json.jsonify(new_basket.to_dict())
         resp.status_code = HTTPStatus.CREATED
         resp.headers['Location'] = BASKET_API_URL + str(new_basket.id)

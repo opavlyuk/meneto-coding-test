@@ -57,7 +57,7 @@ class TestBasketAPI(BaseCase):
                       'items': [{'id': 1, 'quantity': 2},
                                 {'id': 2, 'quantity': 10}]}
         response = self.client.post(self.basket_api_url, json=new_basket)
-        self.assertEqual(HTTPStatus.INTERNAL_SERVER_ERROR, response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
         actual_obj_in_db = Basket.get(id=len(self.baskets) + 1)
         self.assertIsNone(actual_obj_in_db)
         self.assertEqual(len(self.basket_items), len(orm.select(i for i in BasketItem)[:]))
@@ -87,7 +87,7 @@ class TestBasketAPI(BaseCase):
                       'items': [{'id': self.products[-1].id + 1, 'quantity': 2},
                                 {'id': self.products[-1].id + 2, 'quantity': 10}]}
         response = self.client.post(self.basket_api_url, json=new_basket)
-        self.assertEqual(HTTPStatus.INTERNAL_SERVER_ERROR, response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
         actual_obj_in_db = Basket.get(id=len(self.baskets) + 1)
         self.assertIsNone(actual_obj_in_db)
         self.assertEqual(len(self.basket_items), len(orm.select(i for i in BasketItem)[:]))
@@ -109,7 +109,6 @@ class TestBasketAPI(BaseCase):
         resp_body = response.get_json()
         self.assertDictContainsSubset(expected_obj, resp_body)
         self.assertEqual(2, len(list(actual_obj_in_db.items)))
-        import time; time.sleep(0.7)
         for n, i in enumerate(actual_obj_in_db.items):
             self.assertEqual(updated_basket['items'][n]['id'], i.product.id,
                              'Updated item product id for item {}'.format(i))

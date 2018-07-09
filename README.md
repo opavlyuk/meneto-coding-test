@@ -60,5 +60,3 @@ Execute unit tests:
 (venv) $ python -m unittest
 
 ```
-
-Note: Traceback KeyError: 'Product with id 3 not found' **IS** expected
