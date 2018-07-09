@@ -109,6 +109,7 @@ class TestBasketAPI(BaseCase):
         resp_body = response.get_json()
         self.assertDictContainsSubset(expected_obj, resp_body)
         self.assertEqual(2, len(list(actual_obj_in_db.items)))
+        import time; time.sleep(0.7)
         for n, i in enumerate(actual_obj_in_db.items):
             self.assertEqual(updated_basket['items'][n]['id'], i.product.id,
                              'Updated item product id for item {}'.format(i))
